@@ -59,8 +59,12 @@ DOWNLOAD_DELAY = 5
     
 # }
 
+
 # # En tu archivo settings.py de Scrapy
 # USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+
+ROTATING_PROXY_LIST_PATH = '../proxies.txt'
+
 
 # ROTATING_PROXY_LIST_PATH = 'proxies.txt'
 # DOWNLOAD_TIMEOUT = 35
