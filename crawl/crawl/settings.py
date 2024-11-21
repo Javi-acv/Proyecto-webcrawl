@@ -55,7 +55,7 @@ DOWNLOADER_MIDDLEWARES = {
     'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
 }
 
-ROTATING_PROXY_LIST_PATH = 'proxies.txt'
+ROTATING_PROXY_LIST_PATH = '../proxies.txt'
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
