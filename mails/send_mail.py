@@ -44,16 +44,22 @@ def enviar_correo():
             <h2>Listado de conciertos</h2>
             <table>
                 <tr>
-                    <th>Título</th>
-                    <th>Precio</th>
+                    <th>Artista</th>
+                    <th>Lugar</th>
+                    <th>Ciudad</th>
+                    <th>Fecha</th>
+                    <th>Enlace</th>
                 </tr>
         """
 
-        for libro in contenido:
+        for concierto in contenido:
             contenido_correo += f"""
                 <tr>
-                    <td>{libro['title']}</td>
-                    <td>{libro['price']}</td>
+                    <td>{concierto['Artista']}</td>
+                    <td>{concierto['Lugar']}</td>
+                    <td>{concierto['Ciudad']}</td>
+                    <td>{concierto['Fecha']}</td>
+                    <td><a href="{concierto['Enlace']}">Ver detalle</a></td>
                 </tr>
             """
 
