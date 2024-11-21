@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = "crawl.spiders"
 #USER_AGENT = "crawl (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -25,7 +25,7 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 5
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -48,16 +48,25 @@ DOWNLOAD_DELAY = 3
 #    "crawl.middlewares.CrawlSpiderMiddleware": 543,
 #}
 
-# Enable or disable downloader middlewares
+# Enable or disable downloader middlewaresW
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-    'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
-    'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
-}
+# DOWNLOADER_MIDDLEWARES = {
+#     'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+#     'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+#     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,  # desactivar si no lo necesitas
+#     'scrapy.spidermiddlewares.referer.RefererMiddleware': None,
+#     'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware': None,
+    
+# }
 
-ROTATING_PROXY_LIST_PATH = 'proxies.txt'
+# # En tu archivo settings.py de Scrapy
+# USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 
-# Enable or disable extensions
+# ROTATING_PROXY_LIST_PATH = 'proxies.txt'
+# DOWNLOAD_TIMEOUT = 35
+# MAX_RETRIES = 12
+
+# Enable or disable extensionsW
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
 #EXTENSIONS = {
 #    "scrapy.extensions.telnet.TelnetConsole": None,
@@ -65,9 +74,11 @@ ROTATING_PROXY_LIST_PATH = 'proxies.txt'
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "crawl.pipelines.CrawlPipeline": 300,
-#}
+ITEM_PIPELINES = {
+    'scrapy.pipelines.images.ImagesPipeline': 1,
+#    'jkcrawler.pipelines.JkcrawlerPipeline': 300,
+}
+IMAGES_STORE = 'data'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -91,5 +102,5 @@ ROTATING_PROXY_LIST_PATH = 'proxies.txt'
 #HTTPCACHE_STORAGE = "scrapy.extensions.httpcache.FilesystemCacheStorage"
 
 # Set settings whose default value is deprecated to a future-proof value
-TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+# TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
