@@ -13,11 +13,12 @@ def enviar_correo():
         
         mensaje= MIMEMultipart()
         mensaje['From']='WebCrawler'
-        mensaje['To']='alvaritodavilag0331@gmail.com'
+        destinatarios=['alvaritodavilag0331@gmail.com','javieraceves323@gmail.com']
+        mensaje['To']=", ".join(destinatarios)
         mensaje['Subject']='Resultados de búsqueda'
         
         #read json file
-        with open('crawl/test.json','r',encoding='utf-8') as f:
+        with open('crawl/lista.json','r',encoding='utf-8') as f:
             contenido=json.load(f)
         
         #body mail
@@ -53,25 +54,25 @@ def enviar_correo():
         """
 
         for concierto in contenido:
-            contenido_correo += f"""
-                <tr>
-                    <td>{concierto['Artista']}</td>
-                    <td>{concierto['Lugar']}</td>
-                    <td>{concierto['Ciudad']}</td>
-                    <td>{concierto['Fecha']}</td>
-                    <td><a href="{concierto['Enlace']}">Ver detalle</a></td>
-                </tr>
-            """
+            if concierto['Artista'] and concierto['Lugar'] and concierto['Ciudad'] and concierto['Fecha']:
+                contenido_correo += f"""
+                    <tr>
+                        <td>{concierto['Artista']}</td>
+                        <td>{concierto['Lugar']}</td>
+                        <td>{concierto['Ciudad']}</td>
+                        <td>{concierto['Fecha']}</td>
+                        <td><a href="{concierto['Enlace']}">Ver detalle</a></td>
+                    </tr>
+                """
 
         contenido_correo += """
             </table>
         </body>
         </html>
         """
-
         mensaje.attach(MIMEText(contenido_correo,'html'))
         #send mail
-        server.sendmail('proyectowebcrawler@gmail.com','alvaritodavilag0331@gmail.com',mensaje.as_string())
+        server.sendmail('proyectowebcrawler@gmail.com',destinatarios,mensaje.as_string())
     except Exception as e:
         print(f"Error al enviar el correo: {e}")
     finally:

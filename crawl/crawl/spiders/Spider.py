@@ -26,27 +26,32 @@ class SongkickSpider(CrawlSpider):
     }
     
     def parse_start_url(self, response):
-        """
-        Procesa la página inicial directamente.
-        """
         self.logger.info("Procesando la página inicial: %s", response.url)
         
-        # Extraer todos los eventos en la página inicial
+        # Selecciona todos los elementos de eventos
         events = response.css('li.event-listings-element')
 
-        for event in events:
-            yield {
-                "Artista": event.css('p.artists a.event-link strong::text').get(),
-                "Lugar": event.css('p.location a.venue-link::text').get(),
-                "Ciudad": event.css('p.location span.city-name::text').get(),
-                "Fecha": event.css('time::attr(datetime)').get(),
-                "Enlace": response.urljoin(event.css('p.artists a.event-link::attr(href)').get()),
-            }
+        for i, event in enumerate(events, start=1):
+            artista = event.css('p.artists a.event-link strong::text').get()
+            lugar = event.css('p.location a.venue-link::text').get()
+            ciudad = event.css('p.location span.city-name::text').get()
+            fecha = event.css('time::attr(datetime)').get()
+            enlace = response.urljoin(event.css('p.artists a.event-link::attr(href)').get())
+
+            # Validar datos extraídos
+            if artista and lugar and ciudad and fecha:
+                self.logger.info(f"Evento {i}: Datos válidos encontrados.")
+                yield {
+                    "Artista": artista,
+                    "Lugar": lugar,
+                    "Ciudad": ciudad,
+                    "Fecha": fecha,
+                    "Enlace": enlace,
+                }
+            else:
+                self.logger.warning(f"Evento {i}: Datos incompletos. Saltando este registro.")
 
     def parse_event(self, response):
-        """
-        Mantén esta función si deseas procesar páginas de eventos individuales.
-        """
         self.logger.info("Procesando evento: %s", response.url)
         yield {
             "Artista": response.css('div.artists-venue-location-wrapper p.artists strong::text').get(),
